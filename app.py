@@ -2,18 +2,13 @@ from flask import Flask, request, jsonify
 import pickle
 import re
 import nltk
-import os
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+import logging
 
-# Set NLTK data directory to a writable path
-NLTK_DATA_DIR = "/tmp/nltk_data"
-os.makedirs(NLTK_DATA_DIR, exist_ok=True)
-nltk.data.path.append(NLTK_DATA_DIR)
-
-# Download required resources in the specified directory
-nltk.download('punkt', download_dir=NLTK_DATA_DIR)
-nltk.download('stopwords', download_dir=NLTK_DATA_DIR)
+# Download required NLTK resources
+nltk.download('punkt')
+nltk.download('stopwords')
 
 # Load trained model and vectorizer
 with open("knn_model.pkl", "rb") as model_file:
@@ -42,6 +37,9 @@ def predict():
         data = request.get_json()
         symptoms = data.get("symptoms", "")
 
+        if not symptoms:
+            return jsonify({"error": "The 'symptoms' field is required."}), 400
+
         # Preprocess symptoms
         preprocessed_symptom = preprocess_text(symptoms)
         symptom_tfidf = tfidf_vectorizer.transform([preprocessed_symptom])
@@ -51,6 +49,7 @@ def predict():
         return jsonify({"Predicted Disease": predicted_disease})
 
     except Exception as e:
+        logging.error(f"Error during prediction: {e}")
         return jsonify({"error": str(e)})
 
 if __name__ == "__main__":
