@@ -13,8 +13,8 @@ with open("tfidf_vectorizer.pkl", "rb") as vectorizer_file:
     tfidf_vectorizer = pickle.load(vectorizer_file)
 
 # Download stopwords if not available
-nltk.download('stopwords')
 nltk.download('punkt')
+nltk.download('stopwords')
 
 app = Flask(__name__)
 
