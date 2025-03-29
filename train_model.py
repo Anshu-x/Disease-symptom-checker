@@ -11,8 +11,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, classification_report
 
 # Download NLTK stopwords if not already downloaded
-nltk.download('stopwords')
 nltk.download('punkt')
+nltk.download('stopwords')
 
 # Load dataset
 df = pd.read_csv("data.csv")  # Change this to your actual dataset file
