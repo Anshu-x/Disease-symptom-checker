@@ -1,7 +1,8 @@
 Flask
-pandas
 numpy
+pandas
 scikit-learn
 nltk
 wordcloud
-gunicorn  
+matplotlib
+gunicorn
